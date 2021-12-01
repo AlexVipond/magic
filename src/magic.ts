@@ -1,4 +1,4 @@
-type Magical<T extends SupportedType> = {
+type Magical<T> = {
   /**
    * Summon the up-to-date magical state.
    */
@@ -14,14 +14,13 @@ type Magical<T extends SupportedType> = {
    */
   obliviate: (newMemory: T) => void,
 }
-type SupportedType = string | number | boolean
 type Spell<T> = (obliviatedMagical: T, previousMagical: T) => void
 
 /**
  * Create some magical state.
  * @param initialState The initial state of the magical state.
  */
-export const useMagical = <T extends SupportedType>(initial: T): Magical<T> => {
+export const useMagical = <T>(initial: T): Magical<T> => {
   // `magical` is the state. The state is magical.
   let magical: T = initial
 
@@ -54,8 +53,8 @@ export const useMagical = <T extends SupportedType>(initial: T): Magical<T> => {
  * @param spell A special kind of spell, performed on multiple pieces of current and previous magical state.
  */
 export const useExtendableEar = (
-  spell: (indexOfObliviated: number, obliviatedMagicals: SupportedType[], previousMagicals: SupportedType[]) => void,
-  ...magicals: Magical<SupportedType>[]
+  spell: (indexOfObliviated: number, obliviatedMagicals: any[], previousMagicals: any[]) => void,
+  ...magicals: Magical<any>[]
 ): number => {
   for (let i = 0; i < magicals.length; i++) {
     magicals[i].extendEar((obliviatedMagical, previousMagical) => {

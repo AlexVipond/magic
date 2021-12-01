@@ -58,7 +58,7 @@ const count1 = useMagical(0)
 const count2 = useMagical(0)
 
 // Extend the same extendable ear into multiple instances
-// of Magic. Pass a spell to case when any individual magical
+// of Magic. Pass a spell to cast when any individual magical
 // state changes, then pass an arbitrary number of Magic
 // instances to extend the ear into.
 //
@@ -97,7 +97,6 @@ Instead, you can use truly barbaric APIs like `getElementById` to perform side e
     <div><button id="count-button">Increase count</button></div>
     <div><span>Count:</span><span id="count-display"></span></div>
   </div>
-  
 </body>
 <script src="https://unpkg.com/@alexvipond/magic/lib/index.umd.js"></script>
 
@@ -108,8 +107,8 @@ const count = useMagical(0)
 const countButton = document.getElementById('count-button')
 const countDisplay = document.getElementById('count-display')
 
-count.extendEar(newMemory => {
-  countDisplay.textContent = `${newMemory}`
+count.extendEar(obliviatedState => {
+  countDisplay.textContent = `${obliviatedState}`
 })
 
 countButton.addEventListener('click', () => {

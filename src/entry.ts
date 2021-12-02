@@ -1,21 +1,44 @@
 import './index.css'
 import '@fontsource/inter/variable.css'
 
-import { useMagical, useExtendableEar } from './magic'
+import { useMagical, useExtendableEar, useConjuror, Conjuror } from './magic'
 
-const count1 = useMagical(0)
-const count1Button = document.getElementById('count1-button')
-const count1Display = document.getElementById('count1-display')
+const app = useConjuror('app')
 
-count1.extendEar(newMemory => count1Display.textContent = `${newMemory}`)
-count1Button.addEventListener('click', () => count1.obliviate(count1.accio() + 1))
+const useCount = (conjuror: Conjuror) => {
+  const count = useMagical(0)
+  
+  const IncreaseCount = (() => {
+    const div = conjuror.conjure('div')
+    
+    const button = div.conjure('button')
+    button.accio().innerHTML = 'Increase count'
 
-const count2 = useMagical(0)
-const count2Button = document.getElementById('count2-button')
-const count2Display = document.getElementById('count2-display')
+    const span = button.conjure('span')
 
-count2.extendEar(newMemory => count2Display.textContent = `${newMemory}`)
-count2Button.addEventListener('click', () => count2.obliviate(count2.accio() + 1))
+    return { div, button, span }
+  })()
+  
+  const DisplayCount = (() => {
+    const div = conjuror.conjure('div')
+
+    const label = div.conjure('span')
+    label.accio().textContent = 'Count: '
+
+    const display = div.conjure('span')
+
+    return { div, label, display }
+  })()
+  
+  count.extendEar(obliviatedState => DisplayCount.display.accio().textContent = `${obliviatedState}`)
+  IncreaseCount.button.accio().addEventListener('click', () => count.obliviate(count.accio() + 1))
+
+  return { count, IncreaseCount, DisplayCount }
+}
+
+
+const { count: count1, DisplayCount } = useCount(app)
+const { count: count2 } = useCount(app)
 
 useExtendableEar(
   (i, o, p) => console.log({ i, o, p }),

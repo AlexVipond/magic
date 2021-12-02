@@ -1,4 +1,4 @@
-type Magical<T> = {
+export type Magical<T> = {
   /**
    * Summon the up-to-date magical state.
    */
@@ -14,7 +14,7 @@ type Magical<T> = {
    */
   obliviate: (newMemory: T) => void,
 }
-type Spell<T> = (obliviatedMagical: T, previousMagical: T) => void
+export type Spell<T> = (obliviatedMagical: T, previousMagical: T) => void
 
 /**
  * Create some magical state.
@@ -73,4 +73,34 @@ export const useExtendableEar = (
   }
 
   return magicals.length
+}
+
+export type Conjuror = {
+  accio: () => Element,
+  conjure: (tag: string) => Conjuror,
+  conjured: Conjuror[]
+}
+
+export function useConjuror (id?: string) {
+  const factory = (element: Element): Conjuror => {
+    const accio: Conjuror['accio'] = () => element
+  
+    const conjure: Conjuror['conjure'] = tag => {
+      const el = document.createElement(tag)
+      const c = factory(el)
+      conjured.push(c)
+      element.appendChild(el)
+      return c
+    }
+  
+    const conjured: Conjuror['conjured'] = []
+  
+    return {
+      accio,
+      conjure,
+      conjured,
+    }
+  }
+
+  return factory(document.getElementById(id))
 }
